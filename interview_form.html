@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+  </head>
+  <body>
+    <h2>面試紀錄表</h2>
+    <span id="butGroup">
+      <form action="">
+        <button id="butEdit" hidden>啟用編輯</button>
+        <button id="butSave">另存 HTML 檔</button>
+        <button id="butPrint">列印</button>
+      </form>
+    </span>
+    <h2>基本資料</h2>
+    <form id="info">
+      <div><label for="name">應徵者姓名</label><input id="name" type="text"></div>
+      <div><label for="time">面試時間</label><input id="time" type="datetime-local"></div>
+      <div>
+        <label for="position">面試職位</label>
+        <span>
+          <select id="position" name="position" value="">
+            <option value=""></option>
+            <option value="AI工程師">AI工程師</option>
+            <option value="Python後端工程師">Python後端工程師</option>
+            <option value="前端工程師">前端工程師</option>
+          </select>
+          <label for="position-2">其他</label>
+          <input id="position-2" type="text">
+        </span>
+      </div>
+      <div><label for="iname">面試人員</label><input id="iname" type="text" data-fromstorage="true"></div>
+    </form>
+    <h2>檢核項目</h2>
+    <form id="scoring">
+      <h3>Python能力</h3>
+      <div>
+        <label for="語法熟悉度">語法熟悉度 (built-in types, decorator, …)</label>
+        <span id="語法熟悉度">
+          <input type="radio" name="語法熟悉度" checked><label>?</label>
+          <input type="radio" name="語法熟悉度"><label>1</label>
+          <input type="radio" name="語法熟悉度"><label>2</label>
+          <input type="radio" name="語法熟悉度"><label>3</label>
+          <input type="radio" name="語法熟悉度"><label>4</label>
+          <input type="radio" name="語法熟悉度"><label>5</label>
+          <textarea id="語法熟悉度-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="Python運作原理">Python運作原理 (async, multi-thread, multi-processing, garbage collection, …)</label>
+        <span id="Python運作原理">
+          <input type="radio" name="Python運作原理" checked><label>?</label>
+          <input type="radio" name="Python運作原理"><label>1</label>
+          <input type="radio" name="Python運作原理"><label>2</label>
+          <input type="radio" name="Python運作原理"><label>3</label>
+          <input type="radio" name="Python運作原理"><label>4</label>
+          <input type="radio" name="Python運作原理"><label>5</label>
+          <textarea id="Python運作原理-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="套件使用">套件使用 (torch, pandas, scikit-learn, celery, FastAPI…)</label>
+        <span id="套件使用">
+          <input type="radio" name="套件使用" checked><label>?</label>
+          <input type="radio" name="套件使用"><label>1</label>
+          <input type="radio" name="套件使用"><label>2</label>
+          <input type="radio" name="套件使用"><label>3</label>
+          <input type="radio" name="套件使用"><label>4</label>
+          <input type="radio" name="套件使用"><label>5</label>
+          <textarea id="套件使用-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+
+      <h3>專業能力</h3>
+      <div>
+        <label for="API 介接能力">API 介接能力 (python package, API requests)</label>
+        <span id="API 介接能力">
+          <input type="radio" name="API 介接能力" checked><label>?</label>
+          <input type="radio" name="API 介接能力"><label>1</label>
+          <input type="radio" name="API 介接能力"><label>2</label>
+          <input type="radio" name="API 介接能力"><label>3</label>
+          <input type="radio" name="API 介接能力"><label>4</label>
+          <input type="radio" name="API 介接能力"><label>5</label>
+          <textarea id="API 介接能力-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="網路概念">網路概念 (HTTP methods, RESTful API, CORS, attacks)</label>
+        <span id="網路概念">
+          <input type="radio" name="網路概念" checked><label>?</label>
+          <input type="radio" name="網路概念"><label>1</label>
+          <input type="radio" name="網路概念"><label>2</label>
+          <input type="radio" name="網路概念"><label>3</label>
+          <input type="radio" name="網路概念"><label>4</label>
+          <input type="radio" name="網路概念"><label>5</label>
+          <textarea id="網路概念-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="前端語言能力">前端語言能力 (JQuery, VueJS, RWD, CSS)</label>
+        <span id="前端語言能力">
+          <input type="radio" name="前端語言能力" checked><label>?</label>
+          <input type="radio" name="前端語言能力"><label>1</label>
+          <input type="radio" name="前端語言能力"><label>2</label>
+          <input type="radio" name="前端語言能力"><label>3</label>
+          <input type="radio" name="前端語言能力"><label>4</label>
+          <input type="radio" name="前端語言能力"><label>5</label>
+          <textarea id="前端語言能力-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="處理資料能力">處理資料能力 (data leakage, pre-/post-processing, cross validation)</label>
+        <span id="處理資料能力">
+          <input type="radio" name="處理資料能力" checked><label>?</label>
+          <input type="radio" name="處理資料能力"><label>1</label>
+          <input type="radio" name="處理資料能力"><label>2</label>
+          <input type="radio" name="處理資料能力"><label>3</label>
+          <input type="radio" name="處理資料能力"><label>4</label>
+          <input type="radio" name="處理資料能力"><label>5</label>
+          <textarea id="處理資料能力-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="處理資料經驗">處理資料經驗 (tabular, image, stream, language, audio, medical, …)</label>
+        <span id="處理資料經驗">
+          <input type="radio" name="處理資料經驗" checked><label>?</label>
+          <input type="radio" name="處理資料經驗"><label>1</label>
+          <input type="radio" name="處理資料經驗"><label>2</label>
+          <input type="radio" name="處理資料經驗"><label>3</label>
+          <input type="radio" name="處理資料經驗"><label>4</label>
+          <input type="radio" name="處理資料經驗"><label>5</label>
+          <textarea id="處理資料經驗-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="AI 模型能力">AI 模型能力 (ensemble, training)</label>
+        <span id="AI 模型能力">
+          <input type="radio" name="AI 模型能力" checked><label>?</label>
+          <input type="radio" name="AI 模型能力"><label>1</label>
+          <input type="radio" name="AI 模型能力"><label>2</label>
+          <input type="radio" name="AI 模型能力"><label>3</label>
+          <input type="radio" name="AI 模型能力"><label>4</label>
+          <input type="radio" name="AI 模型能力"><label>5</label>
+          <textarea id="AI 模型能力-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+
+      <h3>專案實作經驗</h3>
+      <div>
+        <label for="後端專案">後端專案</label>
+        <span id="後端專案">
+          <input type="radio" name="後端專案" checked><label>?</label>
+          <input type="radio" name="後端專案"><label>1</label>
+          <input type="radio" name="後端專案"><label>2</label>
+          <input type="radio" name="後端專案"><label>3</label>
+          <input type="radio" name="後端專案"><label>4</label>
+          <input type="radio" name="後端專案"><label>5</label>
+          <textarea id="後端專案-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="前端專案">前端專案</label>
+        <span id="前端專案">
+          <input type="radio" name="前端專案" checked><label>?</label>
+          <input type="radio" name="前端專案"><label>1</label>
+          <input type="radio" name="前端專案"><label>2</label>
+          <input type="radio" name="前端專案"><label>3</label>
+          <input type="radio" name="前端專案"><label>4</label>
+          <input type="radio" name="前端專案"><label>5</label>
+          <textarea id="前端專案-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="AI 專案">AI 專案</label>
+        <span id="AI 專案">
+          <input type="radio" name="AI 專案" checked><label>?</label>
+          <input type="radio" name="AI 專案"><label>1</label>
+          <input type="radio" name="AI 專案"><label>2</label>
+          <input type="radio" name="AI 專案"><label>3</label>
+          <input type="radio" name="AI 專案"><label>4</label>
+          <input type="radio" name="AI 專案"><label>5</label>
+          <textarea id="AI 專案-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+
+      <h3>其他</h3>
+      <div>
+        <label for="生物醫療背景知識">生物醫療背景知識</label>
+        <span id="生物醫療背景知識">
+          <input type="radio" name="生物醫療背景知識" checked><label>?</label>
+          <input type="radio" name="生物醫療背景知識"><label>1</label>
+          <input type="radio" name="生物醫療背景知識"><label>2</label>
+          <input type="radio" name="生物醫療背景知識"><label>3</label>
+          <input type="radio" name="生物醫療背景知識"><label>4</label>
+          <input type="radio" name="生物醫療背景知識"><label>5</label>
+          <textarea id="生物醫療背景知識-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="積極度">積極度</label>
+        <span id="積極度">
+          <input type="radio" name="積極度" checked><label>?</label>
+          <input type="radio" name="積極度"><label>1</label>
+          <input type="radio" name="積極度"><label>2</label>
+          <input type="radio" name="積極度"><label>3</label>
+          <input type="radio" name="積極度"><label>4</label>
+          <input type="radio" name="積極度"><label>5</label>
+          <textarea id="積極度-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="解決問題及組織能力">解決問題及組織能力</label>
+        <span id="解決問題及組織能力">
+          <input type="radio" name="解決問題及組織能力" checked><label>?</label>
+          <input type="radio" name="解決問題及組織能力"><label>1</label>
+          <input type="radio" name="解決問題及組織能力"><label>2</label>
+          <input type="radio" name="解決問題及組織能力"><label>3</label>
+          <input type="radio" name="解決問題及組織能力"><label>4</label>
+          <input type="radio" name="解決問題及組織能力"><label>5</label>
+          <textarea id="解決問題及組織能力-comment" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+      <div>
+        <label for="理解及溝通表能力">理解及溝通表能力</label>
+        <span id="理解及溝通表能力">
+          <input type="radio" name="理解及溝通表能力" checked><label>?</label>
+          <input type="radio" name="理解及溝通表能力"><label>1</label>
+          <input type="radio" name="理解及溝通表能力"><label>2</label>
+          <input type="radio" name="理解及溝通表能力"><label>3</label>
+          <input type="radio" name="理解及溝通表能力"><label>4</label>
+          <input type="radio" name="理解及溝通表能力"><label>5</label>
+          <textarea id="理解及溝通表能力-commgnt" name="" cols="50" rows="1"></textarea>
+        </span>
+      </div>
+    </form>
+    <form id="record">
+      <h2>面試紀錄</h2>
+      <textarea id="面試紀錄" rows="30"></textarea>
+    </form>
+  </body>
+  <script>
+    addEventListener("beforeunload", (event) => {});
+    onbeforeunload = () => '';
+    window.onload = () => {
+      // default date
+      const localStorage = window.localStorage;
+      Date.prototype.toDateInputValue = (function() {
+        var now = new Date();
+        var offset = now.getTimezoneOffset() * 60000;
+        var adjustedDate = new Date(now.getTime() - offset);
+        return adjustedDate.toISOString().substring(0,16);
+      }); 
+      const timeElem = document.getElementById("time");
+      if (!timeElem.value) {
+        timeElem.value = new Date().toDateInputValue();
+      }
+      // default iname
+      const inameElem = document.getElementById("iname")
+      if (inameElem.dataset.fromstorage=="true") {
+        inameElem.value = localStorage.getItem("MuenInterviewerName");
+      }
+      // iname change
+      document.getElementById("iname").addEventListener("change", (e) => {
+        const iname = e.target.value;
+        localStorage.setItem("MuenInterviewerName", iname);
+      });
+      // pos change
+      document.getElementById("position").addEventListener("change", (e) => {
+        if (!!e.target.value) {
+          document.getElementById("position-2").value = "";
+        }
+      });
+      // pos2 input
+      document.getElementById("position-2").addEventListener("input", (e) => {
+        document.getElementById("position").value = "";
+      });
+      // disable default form action
+      const forms = document.getElementsByTagName("form");
+      for (let form of forms) {
+        form.addEventListener("submit", (e) => {e.preventDefault();}, false);
+      }
+      // edit button
+      const butEdit = document.getElementById("butEdit");
+      butEdit.addEventListener("click", (e) => {
+        butEdit.setAttribute("hidden", true);
+        for (let dom of document.querySelectorAll("input,textarea,select")) {
+          dom.removeAttribute("disabled");
+        }
+      });
+      // print button
+      const butPrint = document.getElementById("butPrint");
+      butPrint.addEventListener("click", (e) => {
+        print();
+      });
+      // save button
+      const butSave = document.getElementById("butSave");
+      butSave.addEventListener("click", (e) => {
+        if (!validateForm()) return;
+        const name = document.getElementById("name").value;
+        const time = document.getElementById("time").value;
+        const pos1 = document.getElementById("position").value;
+        const pos2 = document.getElementById("position-2").value;
+        const pos = !!pos1 ? pos1 : pos2;
+        const fname = `${pos}_${time}_${name}.html`;
+
+        const html = handleFormValues();
+        const htmlBlob = new Blob([html], { type: "text/html" });
+        const blobUrl = URL.createObjectURL(htmlBlob);
+        const anchorElement = document.createElement("a");
+        anchorElement.href = blobUrl;
+        anchorElement.download = fname;
+        anchorElement.click();
+      });
+      // form
+      function validateForm () {
+        const name = document.getElementById("name").value;
+        const iname = document.getElementById("iname").value;
+        const pos1 = document.getElementById("position").value;
+        const pos2 = document.getElementById("position-2").value;
+        const pos = !!pos1 ? pos1 : pos2;
+        if (!name) alert("應徵者姓名未填寫");
+        else if (!pos) alert("面試職位未填寫");
+        else if (!iname) alert("面試人員未填寫");
+        else {
+          return true;
+        }
+        return false;
+      }
+      function handleFormValues () {
+        const butEdit = document.getElementById("butEdit");
+        butEdit.removeAttribute("hidden");
+
+        document.getElementById("iname").setAttribute("data-fromstorage", "false");
+        for (let dom of document.querySelectorAll("input[type=text]")) {
+          dom.setAttribute("value", dom.value)
+          dom.setAttribute("disabled", true);
+        }
+        for (let dom of document.querySelectorAll("input[type=radio]")) {
+          if (dom.checked) {
+            dom.setAttribute("checked", "true");
+          } else {
+            dom.removeAttribute("checked");
+          }
+          dom.setAttribute("disabled", true);
+        }
+        for (let dom of document.querySelectorAll("select")) {
+          dom.setAttribute("value", dom.value)
+          dom.setAttribute("disabled", true);
+        }
+        for (let dom of document.querySelectorAll("input[type=datetime-local]")) {
+          dom.setAttribute("value", dom.value)
+          dom.setAttribute("disabled", true);
+        }
+        for (let dom of document.getElementsByTagName("textarea")) {
+          dom.innerHTML = dom.value;
+          dom.setAttribute("disabled", true);
+        }
+        const html = document.getElementsByTagName("html")[0].innerHTML;
+        return html;
+      }
+    }
+  </script>
+  <style>
+  label {
+    margin-right: 5px;
+  }
+  form#scoring {
+    width: fit-content;
+    margin-bottom: 5px;
+  }
+  form#scoring > div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  textarea#面試紀錄 {
+    width: 80vw;
+  }
+  #butGroup {
+    display: block;
+    position: absolute;
+    right: 50px;
+    top: 50px;
+  }
+  </style>
+</html>
