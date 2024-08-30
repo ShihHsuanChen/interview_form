@@ -350,6 +350,13 @@
         for (let dom of document.querySelectorAll("select")) {
           dom.setAttribute("value", dom.value)
           dom.setAttribute("disabled", true);
+          for (let opt of dom.children) {
+            if (opt.selected) {
+              opt.setAttribute("selected", "true")
+            } else {
+              opt.removeAttribute("selected")
+            }
+          }
         }
         for (let dom of document.querySelectorAll("input[type=datetime-local]")) {
           dom.setAttribute("value", dom.value)
