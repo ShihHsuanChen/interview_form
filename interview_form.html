@@ -28,11 +28,23 @@
             itemId: "syntax",
             title: "語法熟悉度 (built-in types, decorator, …)",
             positionIds: null,
+            questions: [
+              'Python 有哪些 built-in types?',
+              'list, dict, set, tuple 何者是 immutable?',
+              '請實作一個有參數的 Decorator',
+              '請解釋 try ... except ... finally 語法',
+              '請解釋 list comprehension 語法',
+            ]
           },
           {
             itemId: "concept",
             title: "Python運作原理 (async, multi-thread, multi-processing, garbage collection, …)",
             positionIds: null,
+            questions: [
+              '請解釋 Python 的 Variable Scope',
+              '請解釋 async, multi-thread, multi-processing 以及三者有何不同',
+              '請解釋 Python Garbage Collection 的機制',
+            ]
           },
           {
             itemId: "package",
@@ -196,7 +208,7 @@
     <form id="scoring"></form>
     <form id="record">
       <h2>面試紀錄</h2>
-      <textarea id="面試紀錄" rows="30"></textarea>
+      <textarea id="notes" rows="30"></textarea>
     </form>
   </body>
   <script>
@@ -215,11 +227,11 @@
       }
       return elem;
     }
-    function createScoringItem (id, title, positionIds) {
+    function createScoringItem (id, title, positionIds, questions) {
       /*
       <div data-positionids="{positionIds.join(',')}">
         <label for="{id}">{title}</label>
-        <span id="{id}">
+        <fieldset id="{id}">
           <input type="radio" name="{id}" checked><label>?</label>
           <input type="radio" name="{id}" value="0"><label>0</label>
           <input type="radio" name="{id}" value="1"><label>1</label>
@@ -228,7 +240,20 @@
           <input type="radio" name="{id}" value="4"><label>4</label>
           <input type="radio" name="{id}" value="5"><label>5</label>
           <textarea id="{id}-comment" name="" cols="50" rows="1"></textarea>
-        </span>
+        </fieldset>
+        <div class="questions">
+          <div class="question">
+            <label>{question}</label>
+            <selectid="{id}-question-{i}">
+              <option value="" selected></option>
+              <option value="0">No Experience</option>
+              <option value="1">Incorrect</option>
+              <option value="2">Partially Correct</option>
+              <option value="3">Correct</option>
+              <option value="4">Complete</option>
+            </select>
+          </div>
+        </div>
       </div>
       */
       const elemOpts = createElement('fieldset', {id: id}, [
@@ -242,10 +267,27 @@
         );
       }
       elemOpts.append(createElement('textarea', {id: `${id}-comment`, name: "", cols: 50, rows: 1}));
+      const elemQuestions = createElement(
+        'ol', {'class': 'questions', hidden: ''},
+        questions ? (
+          questions.map((question) => (
+            createElement('li', {'class': 'question'}, [
+              createElement('label', {}, [question]),
+              createElement('select', {}, [
+                createElement('option', {value: '', selected: ''}),
+                ...['No Experience', 'Incorrect', 'Partially Correct', 'Correct', 'Complete'].map(
+                  (opt,i)=>createElement('option', {value: i}, [opt]))
+              ])
+            ])
+          ))
+        ) : (
+          [createElement('div', {'class': 'no-question'}, ['No Question'])]
+        )
+      );
       return createElement(
         'div',
         {'class': 'scoring-item', 'data-positionids': (positionIds??[]).join(',')},
-        [createElement('label', {'for': id}, [title]), elemOpts],
+        [createElement('label', {'for': id}, [title]), elemOpts, elemQuestions],
       );
     }
     function getPositionId () {
@@ -295,6 +337,7 @@
               `${group.groupId}-${groupItem.itemId}`,
               groupItem.title,
               groupItem.positionIds??group.positionIds,
+              groupItem.questions,
             )
           ),
         );
@@ -353,6 +396,15 @@
       // hide unscored
       document.getElementById("showUnscored").addEventListener("change", (e) => {
         setHideAllUnscored(!e.target.checked);
+      });
+      // show questions
+      document.querySelectorAll(".scoring-item > label").forEach((elem) => {
+        elem.addEventListener("click", (e) => {
+          const elemQuestions = e.target.parentElement.querySelector('.questions');
+          elemQuestions.hasAttribute('hidden') ? 
+          elemQuestions.removeAttribute('hidden') :
+          elemQuestions.setAttribute('hidden', '');
+        })
       });
       // disable default form action
       const forms = document.getElementsByTagName("form");
@@ -463,20 +515,31 @@
     align-items: center;
   }
   form#scoring {
-    width: fit-content;
+    width: 80%;
+    min-width: 600px;
     margin-bottom: 5px;
   }
-  form#scoring > div {
+  form#scoring .scoring-item {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
+    flex-wrap: wrap;
+  }
+  form#scoring .scoring-item > label {
+    cursor: pointer;
+    flex: 1;
   }
   form#scoring fieldset {
     display: flex;
     align-items: center;
     border: none;
   }
-  textarea#面試紀錄 {
+  form#scoring .questions {
+    flex-basis: 100%;
+    background: lightgray;
+    padding: 10px 0 10px 40px;
+  }
+  textarea#notes {
     width: 80vw;
   }
   #butGroup {
