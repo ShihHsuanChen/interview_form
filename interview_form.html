@@ -204,7 +204,7 @@
         </span>
       </div>
       */
-      const elemOpts = createElement('span', {id: id}, [
+      const elemOpts = createElement('fieldset', {id: id}, [
         createElement('input', {type: 'radio', name: id, value: '?', checked: ''}),
         createElement('label', {}, ['?'])
       ]);
@@ -264,7 +264,11 @@
         elemScoreForm.append(
           createElement('h3', {'data-positionids': group.positionIds}, [group.title]),
           ...group.items.map((groupItem) => 
-            createScoringItem(groupItem.itemId, groupItem.title, groupItem.positionIds??group.positionIds)
+            createScoringItem(
+              `${group.groupId}-${groupItem.itemId}`,
+              groupItem.title,
+              groupItem.positionIds??group.positionIds,
+            )
           ),
         );
       });
@@ -422,6 +426,9 @@
   label {
     margin-right: 5px;
   }
+  input[type=radio] {
+    margin: 0 3px;
+  }
   form#filter {
     font-size: initial;
     font-weight: normal;
@@ -436,6 +443,11 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
+  }
+  form#scoring fieldset {
+    display: flex;
+    align-items: center;
+    border: none;
   }
   textarea#面試紀錄 {
     width: 80vw;
