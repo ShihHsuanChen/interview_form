@@ -29,11 +29,12 @@
             title: "語法熟悉度 (built-in types, decorator, …)",
             positionIds: null,
             questions: [
-              'Python 有哪些 built-in types?',
-              'list, dict, set, tuple 何者是 immutable?',
-              '請實作一個有參數的 Decorator',
-              '請解釋 try ... except ... finally 語法',
-              '請解釋 list comprehension 語法',
+              "Python 有哪些 built-in types?",
+              "list, dict, set, tuple 何者是 immutable?",
+              "請實作一個有參數的 Decorator",
+              "請解釋 try ... except ... finally 語法",
+              "請解釋 list comprehension 語法",
+              "如何避免 Circular Import?",
             ]
           },
           {
@@ -41,9 +42,9 @@
             title: "Python運作原理 (async, multi-thread, multi-processing, garbage collection, …)",
             positionIds: null,
             questions: [
-              '請解釋 Python 的 Variable Scope',
-              '請解釋 async, multi-thread, multi-processing 以及三者有何不同',
-              '請解釋 Python Garbage Collection 的機制',
+              "請解釋 Python 的 Variable Scope",
+              "請解釋 async, multi-thread, multi-processing 以及三者有何不同",
+              "請解釋 Python Garbage Collection 的機制",
             ]
           },
           {
@@ -60,28 +61,60 @@
         items: [
           {
             itemId: "syntax",
-            title: "語法熟悉度 (data types, iteration syntaxes, function call, css hierechy)",
+            title: "語法熟悉度 (data types, iteration syntaxes, function call)",
             positionIds: null,
+            questions: [
+              "Javascript/Typescript 有哪些 data types?",
+              "有哪些宣告變數的方法? 有何區別?",
+              "function 有那些呼叫方法",
+              "window.onload 的用途",
+              "Promise 的使用方法",
+              "如何使用 array.reduce?",
+            ],
           },
           {
             itemId: "framework",
             title: "框架熟悉度 (jQuery, Vue2, React, SCSS)",
             positionIds: null,
+            questions: [
+              "請解釋 Vue / React 的元件架構? MVC 分別代表什麼?",
+              "狀態管理是什麼? 使用狀態管理有什麼好處?",
+              "請解釋 useState, useRef, useMemo, useCallback, useEffect 有什麼差別?",
+              "如何避免 Circular Import?",
+            ],
           },
           {
             itemId: "concept",
-            title: "運作原理 (async, Promise, MVC)",
+            title: "運作原理 (async, MVC)",
             positionIds: null,
+            questions: [
+              "Prototype 是什麼?",
+              "async 是什麼? 何時使用 async?",
+              "何為 Mutable variable?",
+              "請解釋 CSS 繼承的順序",
+            ],
           },
           {
             itemId: "package",
             title: "套件使用 (i18n, tailwind)",
             positionIds: null,
+            questions: [
+              "如何實現即時多語言轉換?",
+              "使用 Tailwind 控制 style 的優缺點?",
+            ],
           },
           {
             itemId: "packing",
             title: "效能優化與打包技巧",
             positionIds: null,
+            questions: [
+              "什麼是響應式(responsive)網頁?如何實現?",
+              "如何處理即時訊息? (p2p, websocket)",
+              "如何優化網頁效能?",
+              "如何優化存取大量資料(表格,大圖)時的使用者體驗",
+              "打包包含哪些目的? 有什麼優點?",
+              "如何實現 runtime configuration?",
+            ],
           },
         ],
       },
@@ -94,11 +127,33 @@
             itemId: "devflow",
             title: "開發流程管理 (Git, CI/CD, Docker, test)",
             positionIds: null,
+            questions: [
+              "如何使用 Git 管理多角色的程式碼開發",
+              "git rebase, git merge (fast forward), git cherry-pick 的效果,使用時機與原則有何不同",
+              "請說明 docker container 的生命週期?",
+              "如何避免 docker image 重複佔用空間?",
+              "Docker container 有幾種網路的設定方式?",
+              "CI/CD 如何幫助程式開發?",
+              "請說明如何測試你的程式碼?",
+              "請說明 Unit test 的原則",
+            ],
           },
           {
             itemId: "network",
             title: "網路概念 (HTTP methods, RESTful API, CORS, attacks)",
             positionIds: ["frontend", "pythonbackend"],
+            questions: [
+              "為何在客戶端無法存取你開在伺服器端 127.0.0.1 的服務?",
+              "HTTP methods 有哪些?",
+              "URL 分成哪幾個部分?",
+              "RESTful API 的設計原則?",
+              "如何設定 Cache?",
+              "什麼是 CORS?",
+              "有哪些身分驗證的方法(JWT,cookie,oidc)? 如何使用在網頁上?",
+              "何為 Single Sign-On (SSO) 有什麼好處?",
+              "什麼是 SQL injection/XSS/CSRF/DDOS 攻擊? 如何避免?",
+              "什麼是 forward/reverse proxy? 有什麼功能?",
+            ],
           },
           {
             itemId: "database",
@@ -136,11 +191,18 @@
             itemId: "backendproj",
             title: "後端專案",
             positionIds: ["pythonbackend"],
+            questions: [
+              "請描述一個從頭參與的專案,最重要/有趣/有貢獻的工作是什麼",
+            ],
           },
           {
             itemId: "frontendproj",
             title: "前端專案",
             positionIds: ["frontend"],
+            questions: [
+              "請描述一個從頭參與的專案,最重要/有趣/有貢獻的工作是什麼",
+              "是否有做過 Dashboard 的專案?",
+            ],
           },
           {
             itemId: "aiproj",
@@ -528,6 +590,7 @@
   form#scoring .scoring-item > label {
     cursor: pointer;
     flex: 1;
+    user-select: none;
   }
   form#scoring fieldset {
     display: flex;
