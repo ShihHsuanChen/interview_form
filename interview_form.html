@@ -265,6 +265,8 @@
       <form id="filter">
         <input type="checkbox" id='showUnscored' checked><label for="showUnscored">未評分項目</label>
         <input type="checkbox" id='showAllPositionUnrelated' disabled><label for="showAllPositionUnrelated">職位無關項目</label>
+        <button id="showAllQuestions">展開所有題目</button>
+        <button id="hideAllQuestions">收合所有題目</button>
       </form>
     </h2>
     <form id="scoring"></form>
@@ -363,6 +365,12 @@
         return document.getElementById('position-2').value;
       }
     }
+    function setShowQuestions (show, elems) {
+      elems ??= [...document.getElementsByClassName('questions')];
+      elems.forEach((elem) => {
+        show ? elem.removeAttribute('hidden') : elem.setAttribute('hidden', '');
+      });
+    }
     function setHideAllPositionUnrelated (hide) {
       hide = hide ?? !document.getElementById('showAllPositionUnrelated').checked;
       const positionId = getPositionId();
@@ -455,6 +463,14 @@
       document.getElementById("showAllPositionUnrelated").addEventListener("change", (e) => {
         setHideAllPositionUnrelated(!e.target.checked);
       });
+      // show all questions
+      document.getElementById('showAllQuestions').addEventListener("click", (e) => {
+        setShowQuestions(true);
+      });
+      // hide all questions
+      document.getElementById('hideAllQuestions').addEventListener("click", (e) => {
+        setShowQuestions(false);
+      });
       // hide unscored
       document.getElementById("showUnscored").addEventListener("change", (e) => {
         setHideAllUnscored(!e.target.checked);
@@ -462,10 +478,8 @@
       // show questions
       document.querySelectorAll(".scoring-item > label").forEach((elem) => {
         elem.addEventListener("click", (e) => {
-          const elemQuestions = e.target.parentElement.querySelector('.questions');
-          elemQuestions.hasAttribute('hidden') ? 
-          elemQuestions.removeAttribute('hidden') :
-          elemQuestions.setAttribute('hidden', '');
+          const elemQuestion = e.target.parentElement.querySelector('.questions');
+          setShowQuestions(elemQuestion.hasAttribute('hidden'), [elemQuestion]);
         })
       });
       // disable default form action
@@ -575,6 +589,9 @@
     font-weight: normal;
     display: inline-flex;
     align-items: center;
+  }
+  form#filter button {
+    margin-right: 5px;
   }
   form#scoring {
     width: 80%;
