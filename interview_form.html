@@ -4,6 +4,14 @@
     <meta charset="utf8"></meta>
   </head>
   <script>
+    const scoreLevels = [
+      "No Experience",
+      "Incorrect",
+      "Partially Correct",
+      "Almost Correct",
+      "Correct",
+      "Complete",
+    ];
     const positionOptions = [
       {
         positionId: "ai",
@@ -240,6 +248,7 @@
     <span id="butGroup">
       <form action="">
         <button id="butEdit" hidden>啟用編輯</button>
+        <button id="butScoring">計算分數</button>
         <button id="butSave">另存 HTML 檔</button>
         <button id="butPrint">列印</button>
       </form>
@@ -310,11 +319,12 @@
             <label>{question}</label>
             <selectid="{id}-question-{i}">
               <option value="" selected></option>
-              <option value="0">No Experience</option>
-              <option value="1">Incorrect</option>
-              <option value="2">Partially Correct</option>
-              <option value="3">Correct</option>
-              <option value="4">Complete</option>
+              <option value="0">0 - No Experience</option>
+              <option value="1">1 - Incorrect</option>
+              <option value="2">2 - Partially Correct</option>
+              <option value="3">3 - Almost Correct</option>
+              <option value="4">4 - Correct</option>
+              <option value="5">5 - Complete</option>
             </select>
           </div>
         </div>
@@ -324,12 +334,12 @@
         createElement('input', {type: 'radio', name: id, value: '?', checked: ''}),
         createElement('label', {}, ['?'])
       ]);
-      for (let i=0; i<6; i++) {
+      scoreLevels.forEach((_,i) => {
         elemOpts.append(
           createElement('input', {type: 'radio', name: id, value: i}),
           createElement('label', {}, [i])
         );
-      }
+      });
       elemOpts.append(createElement('textarea', {id: `${id}-comment`, name: "", cols: 50, rows: 1}));
       const elemQuestions = createElement(
         'ol', {'class': 'questions', hidden: ''},
@@ -339,8 +349,8 @@
               createElement('label', {}, [question]),
               createElement('select', {}, [
                 createElement('option', {value: '', selected: ''}),
-                ...['No Experience', 'Incorrect', 'Partially Correct', 'Correct', 'Complete'].map(
-                  (opt,i)=>createElement('option', {value: i}, [opt]))
+                ...scoreLevels.map(
+                  (opt,i)=>createElement('option', {value: i}, [`${i} - ${opt}`]))
               ])
             ])
           ))
@@ -371,25 +381,63 @@
         show ? elem.removeAttribute('hidden') : elem.setAttribute('hidden', '');
       });
     }
-    function setHideAllPositionUnrelated (hide) {
-      hide = hide ?? !document.getElementById('showAllPositionUnrelated').checked;
+    function setHideItems (hide) {
+      const hideAllPositionUnrelated = !document.getElementById('showAllPositionUnrelated').checked;
+      const hideAllUnscored = !document.getElementById('showUnscored').checked;
       const positionId = getPositionId();
       document.querySelectorAll("[data-positionids]").forEach((elem) => {
         const positionIds = (elem.dataset['positionids']||null)?.split(',');
-        const toHide = (
-          hide && positionId != null && positionIds != null
-            && !positionIds.includes(positionId)
-        );
+        let toHide = hide ?? false;
+        if (hideAllPositionUnrelated && positionIds != null && positionId != null) {
+          toHide ||= !positionIds.includes(positionId);
+        }
+        if (hideAllUnscored && elem.classList.contains('scoring-item')) {
+          toHide ||= elem.querySelectorAll(":checked")[0].value == '?';
+        }
         toHide ? elem.setAttribute('hidden', '') : elem.removeAttribute('hidden');
       });
     }
-    function setHideAllUnscored (hide) {
-      hide = hide ?? !document.getElementById('showUnscored').checked;
+    const sum = (arr) => arr.reduce((p,c)=>p+c, 0);
+    const mean = (arr) => arr?.length?sum(arr)/(arr.length):NaN;
+    const std = (arr) => Math.sqrt(mean(arr.map(v=>Math.pow(v,2)))-Math.pow(mean(arr),2));
+
+    function getItemScore (elem, positionId) {
+      // {isPositionItem: true, score: 3, questionScores: [0,2,1,0,5]}
+      positionId ??= getPositionId();
+      const elemScore = elem.querySelector('fieldset input:checked');
+      const elemQuestionScores = elem.querySelectorAll('.question select');
+      const questionScores = [...elemQuestionScores]
+        .map((elemQuestionScore) => parseInt(elemQuestionScore.value))
+        .filter((v) => !isNaN(v));
+      let score = parseInt(elemScore.value);
+      if (isNaN(score) && questionScores.length == 0) return null;
+      else if (isNaN(score)) score = mean(questionScores)
+      const res = {
+        isPositionItem: positionId==null?null:elem.dataset.positionids.includes(positionId),
+        score: parseInt(elemScore.value),
+        questionScores,
+        questionScoreSum: sum(questionScores),
+        questionScoreMean: mean(questionScores),
+        questionScoreStd: std(questionScores),
+        evalMaxScore: 5,
+      };
+      res.evalScore = isNaN(res.score)?res.questionScoreMean:res.score;
+      return res;
+    }
+    function calcTotalScore () {
       const positionId = getPositionId();
-      document.querySelectorAll(".scoring-item").forEach((elem) => {
-        const toHide = hide && elem.querySelectorAll("[checked]")[0].value == '?';
-        toHide ? elem.setAttribute('hidden', '') : elem.removeAttribute('hidden');
-      });
+      const elemScoringItems = [...document.getElementsByClassName('scoring-item')];
+      // collect data
+      // [{isPositionItem: true, score: 3, questionScores: [0,2,1,0,5]}]
+      const itemScores = elemScoringItems.map((elem)=>getItemScore(elem, positionId)).filter((v)=>!!v);
+      const data = {
+        evalMaxScore: sum(itemScores.map(v=>v.evalMaxScore)),
+        evalScore: sum(itemScores.map(v=>v.evalScore)),
+        evalMaxScoreInPosition: sum(itemScores.map(v=>v.isPositionItem?v.evalMaxScore:0)),
+        evalScoreInPosition: sum(itemScores.map(v=>v.isPositionItem?v.evalScore:0)),
+      };
+      console.log(data)
+      alert(Object.entries(data).map(([k,v])=>`${k}: ${v}`).join('\n'))
     }
     (function () {
       // position options
@@ -399,19 +447,24 @@
       ));
       // scoring form
       const elemScoreForm = document.getElementById('scoring');
-      scoreForm.forEach((group) => {
-        elemScoreForm.append(
-          createElement('h3', {'data-positionids': group.positionIds}, [group.title]),
-          ...group.items.map((groupItem) => 
-            createScoringItem(
-              `${group.groupId}-${groupItem.itemId}`,
-              groupItem.title,
-              groupItem.positionIds??group.positionIds,
-              groupItem.questions,
-            )
-          ),
-        );
-      });
+      if (elemScoreForm.childNodes.length === 0) {
+        // clear all
+        elemScoreForm.innerHTML = '';
+        // append items
+        scoreForm.forEach((group) => {
+          elemScoreForm.append(
+            createElement('h3', {'data-positionids': group.positionIds}, [group.title]),
+            ...group.items.map((groupItem) => 
+              createScoringItem(
+                `${group.groupId}-${groupItem.itemId}`,
+                groupItem.title,
+                groupItem.positionIds??group.positionIds,
+                groupItem.questions,
+              )
+            ),
+          );
+        });
+      }
     })();
   </script>
   <script>
@@ -446,22 +499,21 @@
         if (!!e.target.value) {
           document.getElementById("position-2").value = "";
           document.getElementById("showAllPositionUnrelated").removeAttribute('disabled');
-          setHideAllPositionUnrelated();
         } else {
           document.getElementById("showAllPositionUnrelated").setAttribute('disabled', '');
-          setHideAllPositionUnrelated(false);
         }
+        setHideItems()
       });
       // pos2 input
       document.getElementById("position-2").addEventListener("input", (e) => {
         document.getElementById("position").value = "";
         document.getElementById("showAllPositionUnrelated").setAttribute('disabled', '');
-        setHideAllPositionUnrelated(false);
+        setHideItems()
       });
       // showAllPositionUnrelated
-      setHideAllPositionUnrelated();
+      setHideItems();
       document.getElementById("showAllPositionUnrelated").addEventListener("change", (e) => {
-        setHideAllPositionUnrelated(!e.target.checked);
+        setHideItems()
       });
       // show all questions
       document.getElementById('showAllQuestions').addEventListener("click", (e) => {
@@ -473,7 +525,7 @@
       });
       // hide unscored
       document.getElementById("showUnscored").addEventListener("change", (e) => {
-        setHideAllUnscored(!e.target.checked);
+        setHideItems()
       });
       // show questions
       document.querySelectorAll(".scoring-item > label").forEach((elem) => {
@@ -494,6 +546,11 @@
         for (let dom of document.querySelectorAll("input,textarea,select")) {
           dom.removeAttribute("disabled");
         }
+      });
+      // scoring button
+      const butScoring = document.getElementById("butScoring");
+      butScoring.addEventListener("click", (e) => {
+        calcTotalScore();
       });
       // print button
       const butPrint = document.getElementById("butPrint");
