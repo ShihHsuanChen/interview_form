@@ -346,6 +346,12 @@
       <fieldset id="field-roles">
       </fieldset>
     </form>
+    <!-- 照片 -->
+    <div id="photo">
+      <input id="field-photo" type="file" accept=".jpg, .jpeg, .png" hidden/>
+      <img id="image" alt="上傳照片"/>
+      <button id="butRemovePhoto">移除</button>
+    </div>
     <div data-roles="rd,pm" hidden>
       <h2>檢核項目</h2>
       <form id="form-scoring-filter">
@@ -774,11 +780,41 @@
       for (let form of forms) {
         form.addEventListener("submit", (e) => {e.preventDefault();}, false);
       }
+      // upload photo
+      const elemPhoto = document.getElementById("photo");
+      elemPhoto.addEventListener("click", (e) => {
+        document.getElementById("field-photo").click();
+      });
+      // photo change
+      const elemFieldPhoto = document.getElementById("field-photo");
+      elemFieldPhoto.addEventListener("change", (e) => {
+        const file = event.target.files[0];
+        if (file == null) return;
+        const reader = new FileReader();
+        const elemImage = document.getElementById("image");
+        reader.addEventListener('load', function() {
+          elemImage.src = reader.result;
+          elemImage.style.display = 'block';
+        });
+        // Read the file as a Base64 Data URL
+        reader.readAsDataURL(file);
+      });
+      // remove photo
+      const butRemovePhoto = document.getElementById("butRemovePhoto");
+      butRemovePhoto.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const elemImage = document.getElementById("image");
+        elemImage.src = "";
+      });
       // edit button
       const butEdit = document.getElementById("butEdit");
       butEdit.addEventListener("click", (e) => {
         butEdit.setAttribute("hidden", true);
         for (let dom of document.querySelectorAll("input,textarea,select")) {
+          dom.removeAttribute("disabled");
+        }
+        // enable photos
+        for (let dom of document.querySelectorAll("#photo, #photo > input, #photo > button")) {
           dom.removeAttribute("disabled");
         }
       });
@@ -878,6 +914,10 @@
           dom.innerHTML = dom.value;
           dom.setAttribute("disabled", true);
         }
+        // disable photos
+        for (let dom of document.querySelectorAll("#photo, #photo > input, #photo > button")) {
+          dom.setAttribute("disabled", true);
+        }
         const html = document.getElementsByTagName("html")[0].innerHTML;
         return html;
       }
@@ -962,6 +1002,30 @@
     display: block;
     position: absolute;
     right: 50px;
+  }
+  #photo {
+    background: #e1e1e1;
+    width: 180px;
+    height: 180px;
+    position: absolute;
+    top: 120px;
+    right: 140px;
+  }
+  #photo #butRemovePhoto {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  #photo[disabled] #butRemovePhoto {
+    display: none !important;
+  }
+  #photo:hover #butRemovePhoto {
+    display: inline-block;
+  }
+  #photo img {
+    width: 100%;
+    height: 100%;
   }
   [hidden] {
     display: none !important;
