@@ -14,28 +14,73 @@
     ];
     const positionOptions = [
       {
-        positionId: "ai",
+        id: "ai",
         title: "AI演算法工程師",
+        defaultSkills: ["ai", "python"],
       },
       {
-        positionId: "pythonbackend",
-        title: "Python後端軟體工程師",
+        id: "backend",
+        title: "後端整合工程師",
+        defaultSkills: ["backend"],
       },
       {
-        positionId: "frontend",
-        title: "前端工程師",
+        id: "frontend",
+        title: "前端整合工程師",
+        defaultSkills: ["frontend", "jsts"],
+      },
+    ];
+    const roleOptions = [
+      {
+        id: "rd",
+        title: "RD",
+      },
+      {
+        id: "pm",
+        title: "PM",
+      },
+      {
+        id: "mg",
+        title: "主管",
+      },
+      {
+        id: "hr",
+        title: "HR",
+      },
+    ];
+    const skillOptions = [
+      {
+        id: "python",
+        title: "Python",
+      },
+      {
+        id: "jsts",
+        title: "Javascript/Typescript",
+      },
+      {
+        id: "ai",
+        title: "AI",
+      },
+      {
+        id: "frontend",
+        title: "前端",
+      },
+      {
+        id: "backend",
+        title: "後端",
       },
     ];
     const scoreForm = [
       {
         groupId: "python",
-        positionIds: ["pythonbackend", "ai"],
+        skillIds: ["python", "ai"],
+        roleIds: ["rd", "pm"],
         title: "Python能力",
         items: [
           {
             itemId: "syntax",
             title: "語法熟悉度 (built-in types, decorator, …)",
-            positionIds: null,
+            skillIds: null,
+            roleIds: null,
             questions: [
               "Python 有哪些 built-in types?",
               "list, dict, set, tuple 何者是 immutable?",
@@ -48,7 +93,8 @@
           {
             itemId: "concept",
             title: "Python運作原理 (async, multi-thread, multi-processing, garbage collection, …)",
-            positionIds: null,
+            skillIds: null,
+            roleIds: null,
             questions: [
               "請解釋 Python 的 Variable Scope",
               "請解釋 async, multi-thread, multi-processing 以及三者有何不同",
@@ -58,19 +104,21 @@
           {
             itemId: "package",
             title: "套件使用 (torch, pandas, scikit-learn, celery, FastAPI…)",
-            positionIds: null,
+            skillIds: null,
+            roleIds: null,
           },
         ],
       },
       {
         groupId: "frontend",
-        positionIds: ["frontend"],
-        title: "前端語言能力",
+        roleIds: ["rd", "pm"],
+        skillIds: ["frontend", "jsts"],
+        title: "Javascript/Typescript/前端語言能力",
         items: [
           {
             itemId: "syntax",
             title: "語法熟悉度 (data types, iteration syntaxes, function call)",
-            positionIds: null,
+            skillIds: ["frontend", "jsts"],
             questions: [
               "Javascript/Typescript 有哪些 data types?",
               "有哪些宣告變數的方法? 有何區別?",
@@ -82,8 +130,8 @@
           },
           {
             itemId: "framework",
-            title: "框架熟悉度 (jQuery, Vue2, React, SCSS)",
-            positionIds: null,
+            title: "框架熟悉度 (jQuery, Vue2, React)",
+            skillIds: ["frontend", "jsts"],
             questions: [
               "請解釋 Vue / React 的元件架構? MVC 分別代表什麼?",
               "狀態管理是什麼? 使用狀態管理有什麼好處?",
@@ -94,7 +142,8 @@
           {
             itemId: "concept",
             title: "運作原理 (async, MVC)",
-            positionIds: null,
+            skillIds: null,
+            skillIds: ["frontend", "jsts"],
             questions: [
               "Prototype 是什麼?",
               "async 是什麼? 何時使用 async?",
@@ -105,7 +154,7 @@
           {
             itemId: "package",
             title: "套件使用 (i18n, tailwind)",
-            positionIds: null,
+            skillIds: ["frontend", "jsts"],
             questions: [
               "如何實現即時多語言轉換?",
               "使用 Tailwind 控制 style 的優缺點?",
@@ -114,7 +163,7 @@
           {
             itemId: "packing",
             title: "效能優化與打包技巧",
-            positionIds: null,
+            skillIds: ["frontend"],
             questions: [
               "什麼是響應式(responsive)網頁?如何實現?",
               "如何處理即時訊息? (p2p, websocket)",
@@ -129,12 +178,13 @@
       {
         groupId: "prof",
         title: "專業能力",
-        positionIds: null,
+        skillIds: null,
+        roleIds: ["rd", "pm"],
         items: [
           {
             itemId: "devflow",
             title: "開發流程管理 (Git, CI/CD, Docker, test)",
-            positionIds: null,
+            skillIds: null,
             questions: [
               "如何使用 Git 管理多角色的程式碼開發",
               "git rebase, git merge (fast forward), git cherry-pick 的效果,使用時機與原則有何不同",
@@ -149,7 +199,7 @@
           {
             itemId: "network",
             title: "網路概念 (HTTP methods, RESTful API, CORS, attacks)",
-            positionIds: ["frontend", "pythonbackend"],
+            skillIds: ["frontend", "backend"],
             questions: [
               "為何在客戶端無法存取你開在伺服器端 127.0.0.1 的服務?",
               "HTTP methods 有哪些?",
@@ -166,39 +216,40 @@
           {
             itemId: "database",
             title: "資料庫使用經驗及能力 (SQL, NoSQL, vector store)",
-            positionIds: ["pythonbackend", "ai"],
+            skillIds: ["backend", "ai"],
           },
           {
             itemId: "dataproc",
             title: "處理資料能力 (data leakage, pre-/post-processing, cross validation)",
-            positionIds: ["ai"],
+            skillIds: ["ai"],
           },
           {
             itemId: "dataexp",
             title: "處理資料經驗 (tabular, image, stream, language, audio, medical, …)",
-            positionIds: ["frontend", "pythonbackend", "ai"],
+            skillIds: ["frontend", "backend", "ai"],
           },
           {
             itemId: "aimodel",
             title: "AI 模型能力 (ensemble, training)",
-            positionIds: ["ai"],
+            skillIds: ["ai"],
           },
           {
             itemId: "biobackground",
             title: "生物醫療背景知識",
-            positionIds: null,
+            skillIds: null,
           },
         ],
       },
       {
         groupId: "project",
-        positionIds: null,
+        skillIds: null,
+        roleIds: ["rd", "pm"],
         title: "專案實作經驗",
         items: [
           {
             itemId: "backendproj",
             title: "後端專案",
-            positionIds: ["pythonbackend"],
+            skillIds: ["backend"],
             questions: [
               "請描述一個從頭參與的專案,最重要/有趣/有貢獻的工作是什麼",
             ],
@@ -206,7 +257,7 @@
           {
             itemId: "frontendproj",
             title: "前端專案",
-            positionIds: ["frontend"],
+            skillIds: ["frontend"],
             questions: [
               "請描述一個從頭參與的專案,最重要/有趣/有貢獻的工作是什麼",
               "是否有做過 Dashboard 的專案?",
@@ -215,29 +266,32 @@
           {
             itemId: "aiproj",
             title: "AI 專案",
-            positionIds: ["ai"],
+            skillIds: ["ai"],
           },
         ]
       },
       {
         groupId: "other",
-        positionIds: null,
+        skillIds: null,
         title: "其他",
         items: [
           {
             itemId: "positivity",
             title: "積極度",
-            positionIds: null,
+            skillIds: null,
+            roleIds: null,
           },
           {
             itemId: "solv",
             title: "解決問題及組織能力",
-            positionIds: null,
+            skillIds: null,
+            roleIds: null,
           },
           {
             itemId: "communication",
             title: "理解及溝通表能力",
-            positionIds: null,
+            skillIds: null,
+            roleIds: null,
           },
         ],
       }
@@ -276,38 +330,54 @@
       </div>
     </div>
     <h2>基本資料</h2>
-    <form id="info">
-      <div><label for="name">應徵者姓名</label><input id="name" type="text"></div>
-      <div><label for="time">面試時間</label><input id="time" type="datetime-local"></div>
+    <form id="form-info">
+      <div><label for="field-name">應徵者姓名</label><input id="field-name" type="text"></div>
+      <div><label for="field-time">面試時間</label><input id="field-time" type="datetime-local"></div>
       <div>
-        <label for="position">面試職位</label>
+        <label for="field-position">面試職位</label>
         <span>
-          <select id="position" name="position" value="">
-            <option value=""></option>
-          </select>
-          <label for="position-2">其他</label>
-          <input id="position-2" type="text">
+          <select id="field-position" name="position" value=""></select>
+          <label for="field-position-2">其他</label>
+          <input id="field-position-2" type="text">
         </span>
       </div>
-      <div><label for="iname">面試人員</label><input id="iname" type="text" data-fromstorage="true"></div>
+      <div><label for="field-iname">面試人員</label><input id="field-iname" type="text" data-fromstorage="true"></div>
+      <label for="field-roles">面試人員角色</label>
+      <fieldset id="field-roles">
+      </fieldset>
     </form>
-    <h2>
-      檢核項目
-      <form id="filter">
+    <div data-roles="rd,pm" hidden>
+      <h2>檢核項目</h2>
+      <form id="form-scoring-filter">
         <input type="checkbox" id='showUnscored' checked><label for="showUnscored">未評分項目</label>
         <input type="checkbox" id='showAllPositionUnrelated' disabled><label for="showAllPositionUnrelated">職位無關項目</label>
         <button id="showAllQuestions">展開所有題目</button>
         <button id="hideAllQuestions">收合所有題目</button>
       </form>
-    </h2>
-    <form id="scoring"></form>
-    <form id="record">
+      <h3>技能</h3>
+      <form id="form-skills"></form>
+      <form id="form-scoring"></form>
+    </div>
+    <form id="form-hr" data-roles="hr,mg" hidden>
+      <h2>核准項目</h2>
+      <div>
+        <label>職等</label>
+        <input id="field-rank" type="text">
+      </div>
+      <div>
+        <label>薪資範圍</label>
+        <input id="field-salary-min" type="number">
+        <span>-</span>
+        <input id="field-salary-max" type="number">
+      </div>
+    </form>
+    <form id="form-record">
       <h2>面試紀錄</h2>
-      <textarea class="textbox" rows="20"></textarea>
+      <textarea id="field-record" class="textbox" rows="20"></textarea>
     </form>
     <form id="summary">
       <h2>總結</h2>
-      <textarea class="textbox" rows="10"></textarea>
+      <textarea id="field-summary" class="textbox" rows="10"></textarea>
     </form>
   </body>
   <script>
@@ -326,9 +396,9 @@
       }
       return elem;
     }
-    function createScoringItem (id, title, positionIds, questions) {
+    function createScoringItem (id, title, skillIds, questions) {
       /*
-      <div data-positionids="{positionIds.join(',')}">
+      <div data-skillIds="{skillIds.join(',')}">
         <label for="{id}">{title}</label>
         <fieldset id="{id}">
           <input type="radio" name="{id}" checked><label>?</label>
@@ -386,36 +456,84 @@
       );
       return createElement(
         'div',
-        {'class': 'scoring-item', 'data-positionids': (positionIds??[]).join(',')},
+        {'class': 'scoring-item', 'data-skillIds': (skillIds??[]).join(',')},
         [createElement('label', {'for': id}, [title]), elemOpts, elemQuestions],
       );
     }
+    // get position id
     function getPositionId () {
-      return document.getElementById('position')?.value || null;
+      return document.getElementById('field-position')?.value || null;
     }
+    // get position name
     function getPositionName () {
-      const pos1 = document.getElementById('position')?.value;
+      const pos1 = document.getElementById('field-position')?.value;
       if (pos1) {
-        return document.querySelector(`#position > option[value=${pos1}]`).innerHTML;
+        return document.querySelector(`#field-position > option[value=${pos1}]`).innerHTML;
       } else {
-        return document.getElementById('position-2').value;
+        return document.getElementById('field-position-2').value;
       }
     }
+    // get interviewer roles
+    function getInterviewerRoles (checked=true) {
+      const elems = [...document.querySelectorAll('#field-roles input[data-role]')]
+      return (elems
+        .filter(elem => elem.checked == checked)
+        .map(elem => elem.dataset['role'])
+      );
+    }
+    // get skills
+    function getSkills (checked=true) {
+      const elems = [...document.querySelectorAll('#form-skills input[data-skill]')];
+      return (elems
+        .filter(elem => elem.checked == checked)
+        .map(elem => elem.dataset['skill'])
+      );
+    }
+    // show questions
     function setShowQuestions (show, elems) {
       elems ??= [...document.getElementsByClassName('questions')];
       elems.forEach((elem) => {
         show ? elem.removeAttribute('hidden') : elem.setAttribute('hidden', '');
       });
     }
+    // setup default skills
+    function setDefaultSkills () {
+      const positionId = getPositionId();
+      const position = positionOptions.find(v => v.id == positionId)
+      const defaultSkills = position?.defaultSkills??[];
+      const elems = [...document.querySelectorAll('#form-skills input[data-skill]')];
+      // check default skills and make it disabled
+      if (positionId == '') {
+        elems.forEach((elem) => {
+          elem.removeAttribute('checked');
+          elem.removeAttribute('disabled');
+        });
+      } else {
+        elems.forEach((elem) => {
+          console.log(elem, defaultSkills)
+          if (defaultSkills.includes(elem.dataset['skill'])) {
+            elem.setAttribute('checked', '');
+            elem.setAttribute('disabled', '');
+          } else {
+            elem.removeAttribute('checked');
+            elem.removeAttribute('disabled');
+          }
+        });
+      }
+    }
+    // hide items
     function setHideItems (hide) {
       const hideAllPositionUnrelated = !document.getElementById('showAllPositionUnrelated').checked;
       const hideAllUnscored = !document.getElementById('showUnscored').checked;
-      const positionId = getPositionId();
-      document.querySelectorAll("[data-positionids]").forEach((elem) => {
-        const positionIds = (elem.dataset['positionids']||null)?.split(',');
+      // setup default skills
+      // skill-related
+      const skillIds = getSkills();
+      document.querySelectorAll("[data-skillIds]").forEach((elem) => {
+        const _skillIds = (elem.dataset['skillids']||null)?.split(',');
         let toHide = hide ?? false;
-        if (hideAllPositionUnrelated && positionIds != null && positionId != null) {
-          toHide ||= !positionIds.includes(positionId);
+        // TODO: position->skill
+        if (hideAllPositionUnrelated && _skillIds != null && skillIds != null) {
+          toHide ||= !_skillIds.reduce((p,v)=>p||skillIds.includes(v), false);
         }
         if (hideAllUnscored && elem.classList.contains('scoring-item')) {
           toHide ||= elem.querySelectorAll(":checked")[0].value == '?';
@@ -423,10 +541,21 @@
         toHide ? elem.setAttribute('hidden', '') : elem.removeAttribute('hidden');
       });
     }
+    function setShowRoleItems () {
+      const roles = getInterviewerRoles();
+      // role-related
+      document.querySelectorAll("[data-roles]").forEach((elem) => {
+        const _roles = elem.dataset["roles"].split(",");
+        const toShow = _roles.reduce((p,v)=>p||roles.includes(v), false);
+        toShow ? elem.removeAttribute('hidden') : elem.setAttribute('hidden', '');
+      });
+    }
+    // math functions
     const sum = (arr) => arr.reduce((p,c)=>p+c, 0);
     const mean = (arr) => arr?.length?sum(arr)/(arr.length):NaN;
     const std = (arr) => Math.sqrt(mean(arr.map(v=>Math.pow(v,2)))-Math.pow(mean(arr),2));
 
+    // get item score
     function getItemScore (elem, positionId) {
       // {isPositionItem: true, score: 3, questionScores: [0,2,1,0,5]}
       positionId ??= getPositionId();
@@ -450,6 +579,7 @@
       res.evalScore = isNaN(res.score)?res.questionScoreMean:res.score;
       return res;
     }
+    // calculate score
     function calcTotalScore () {
       const positionId = getPositionId();
       const elemScoringItems = [...document.getElementsByClassName('scoring-item')];
@@ -466,13 +596,13 @@
       // alert(Object.entries(data).map(([k,v])=>`${k}: ${v}`).join('\n'))
 
       // show in result area
-      const pos1 = document.getElementById("position").value;
-      const pos2 = document.getElementById("position-2").value;
+      const pos1 = document.getElementById("field-position").value;
+      const pos2 = document.getElementById("field-position-2").value;
       const info = {
-        name: document.getElementById("name").value,
-        time: new Date(document.getElementById("time").value).toLocaleDateString(),
-        position: positionOptions.find(v => v.positionId == pos1)?.title ?? pos2,
-        interviewer: document.getElementById("iname").value,
+        name: document.getElementById("field-name").value,
+        time: new Date(document.getElementById("field-time").value).toLocaleDateString(),
+        position: positionOptions.find(v => v.id == pos1)?.title ?? pos2,
+        interviewer: document.getElementById("field-iname").value,
         summary: document.querySelector("#summary textarea").value,
       }
       const elemResultName = document.getElementById("resultName");
@@ -498,24 +628,61 @@
     }
     (function () {
       // position options
-      const elemPositionSelect = document.getElementById('position');
-      elemPositionSelect.append(...positionOptions.map((opt) => 
-        createElement('option', {'value': opt.positionId}, [opt.title])
-      ));
+      const elemPositionSelect = document.getElementById('field-position');
+      if ([...elemPositionSelect.getElementsByTagName('option')].length == 0) {
+        elemPositionSelect.append(
+          createElement('option', {'value': ''}, [])
+        );
+        elemPositionSelect.append(...positionOptions.map((opt) => 
+          createElement('option', {'value': opt.id}, [opt.title])
+        ));
+      }
+      // skills
+      const elemSkillsForm = document.getElementById('form-skills');
+      if ([...elemSkillsForm.getElementsByTagName('input')].length == 0) {
+        elemSkillsForm.append(...skillOptions.map((opt) => 
+          createElement('span', {}, [
+            createElement('input', {'data-skill': opt.id, 'type': 'checkbox'}),
+            createElement('label', {}, [opt.title]),
+          ])
+        ));
+        elemSkillsForm.append(
+          createElement('div', {}, [
+            createElement('label', {}, ["其他"]),
+            createElement('input', {'data-skill': 'other', 'type': 'text'}),
+          ])
+        )
+      }
+      // roles
+      const elemRolesField = document.getElementById('field-roles');
+      if ([...elemRolesField.getElementsByTagName('input')].length == 0) {
+        elemRolesField.append(...roleOptions.map((opt) => 
+          createElement('span', {}, [
+            createElement('input', {'data-role': opt.id, 'type': 'checkbox'}),
+            createElement('label', {}, [opt.title]),
+          ])
+        ));
+        elemRolesField.append(
+          createElement('span', {}, [
+            createElement('input', {'data-role': 'other', 'type': 'checkbox'}),
+            createElement('label', {}, ['其他']),
+          ])
+        )
+      }
       // scoring form
-      const elemScoreForm = document.getElementById('scoring');
+      const elemScoreForm = document.getElementById('form-scoring');
       if (elemScoreForm.childNodes.length === 0) {
         // clear all
         elemScoreForm.innerHTML = '';
         // append items
         scoreForm.forEach((group) => {
           elemScoreForm.append(
-            createElement('h3', {'data-positionids': group.positionIds}, [group.title]),
+            createElement('h3', {'data-skillIds': group.skillIds}, [group.title]),
             ...group.items.map((groupItem) => 
               createScoringItem(
                 `${group.groupId}-${groupItem.itemId}`,
                 groupItem.title,
-                groupItem.positionIds??group.positionIds,
+                groupItem.skillIds??group.skillIds,
                 groupItem.questions,
               )
             ),
@@ -536,36 +703,47 @@
         var adjustedDate = new Date(now.getTime() - offset);
         return adjustedDate.toISOString().substring(0,16);
       }); 
-      const timeElem = document.getElementById("time");
+      const timeElem = document.getElementById("field-time");
       if (!timeElem.value) {
         timeElem.value = new Date().toDateInputValue();
       }
       // default iname
-      const inameElem = document.getElementById("iname")
+      const inameElem = document.getElementById("field-iname")
       if (inameElem.dataset.fromstorage=="true") {
         inameElem.value = localStorage.getItem("MuenInterviewerName");
       }
       // events
       // iname change
-      document.getElementById("iname").addEventListener("change", (e) => {
+      document.getElementById("field-iname").addEventListener("change", (e) => {
         const iname = e.target.value;
         localStorage.setItem("MuenInterviewerName", iname);
       });
       // pos change
-      document.getElementById("position").addEventListener("change", (e) => {
+      document.getElementById("field-position").addEventListener("change", (e) => {
         if (!!e.target.value) {
-          document.getElementById("position-2").value = "";
+          document.getElementById("field-position-2").value = "";
           document.getElementById("showAllPositionUnrelated").removeAttribute('disabled');
+          setDefaultSkills();
         } else {
           document.getElementById("showAllPositionUnrelated").setAttribute('disabled', '');
         }
         setHideItems()
       });
       // pos2 input
-      document.getElementById("position-2").addEventListener("input", (e) => {
-        document.getElementById("position").value = "";
+      document.getElementById("field-position-2").addEventListener("input", (e) => {
+        document.getElementById("field-position").value = "";
         document.getElementById("showAllPositionUnrelated").setAttribute('disabled', '');
+        setDefaultSkills();
         setHideItems()
+      });
+      // roles change
+      document.getElementById("field-roles").addEventListener("change", (e) => {
+        setShowRoleItems();
+      });
+      setShowRoleItems();
+      // skill change
+      document.getElementById("form-skills").addEventListener("change", (e) => {
+        setHideItems();
       });
       // showAllPositionUnrelated
       setHideItems();
@@ -618,8 +796,8 @@
       const butSave = document.getElementById("butSave");
       butSave.addEventListener("click", (e) => {
         if (!validateForm()) return;
-        const name = document.getElementById("name").value;
-        const time = document.getElementById("time").value;
+        const name = document.getElementById("field-name").value;
+        const time = document.getElementById("field-time").value;
         const posName = getPositionName();
 
         const match = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(time);
@@ -643,10 +821,10 @@
       });
       // form
       function validateForm () {
-        const name = document.getElementById("name").value;
-        const iname = document.getElementById("iname").value;
-        const pos1 = document.getElementById("position").value;
-        const pos2 = document.getElementById("position-2").value;
+        const name = document.getElementById("field-name").value;
+        const iname = document.getElementById("field-iname").value;
+        const pos1 = document.getElementById("field-position").value;
+        const pos2 = document.getElementById("field-position-2").value;
         const pos = !!pos1 ? pos1 : pos2;
         if (!name) alert("應徵者姓名未填寫");
         else if (!pos) alert("面試職位未填寫");
@@ -660,9 +838,17 @@
         const butEdit = document.getElementById("butEdit");
         butEdit.removeAttribute("hidden");
 
-        document.getElementById("iname").setAttribute("data-fromstorage", "false");
+        document.getElementById("field-iname").setAttribute("data-fromstorage", "false");
         for (let dom of document.querySelectorAll("input[type=text]")) {
           dom.setAttribute("value", dom.value)
+          dom.setAttribute("disabled", true);
+        }
+        for (let dom of document.querySelectorAll("input[type=checkbox]")) {
+          if (dom.checked) {
+            dom.setAttribute("checked", "true");
+          } else {
+            dom.removeAttribute("checked");
+          }
           dom.setAttribute("disabled", true);
         }
         for (let dom of document.querySelectorAll("input[type=radio]")) {
@@ -704,40 +890,43 @@
   input[type=radio] {
     margin: 0 3px;
   }
+  fieldset {
+    border: none;
+  }
   form > * {
     margin-bottom: 5px;
   }
-  form#filter {
+  form#form-scoring-filter {
     font-size: initial;
     font-weight: normal;
     display: inline-flex;
     align-items: center;
   }
-  form#filter button {
+  form#form-scoring-filter button {
     margin-right: 5px;
   }
-  form#scoring {
+  form#form-scoring {
     width: 80%;
     min-width: 600px;
     margin-bottom: 5px;
   }
-  form#scoring .scoring-item {
+  form#form-scoring .scoring-item {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
     flex-wrap: wrap;
   }
-  form#scoring .scoring-item > label {
+  form#form-scoring .scoring-item > label {
     cursor: pointer;
     flex: 1;
     user-select: none;
   }
-  form#scoring fieldset {
+  form#form-scoring fieldset {
     display: flex;
     align-items: center;
     border: none;
   }
-  form#scoring .questions {
+  form#form-scoring .questions {
     flex-basis: 100%;
     background: lightgray;
     padding: 10px 0 10px 40px;
